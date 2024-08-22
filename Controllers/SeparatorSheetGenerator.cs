@@ -9,30 +9,28 @@ using System.Text;
 using EliseAPIService;
 using System.Runtime.Serialization;
 using System.Text.RegularExpressions;
-using iText.IO.Image;
-using iText.Kernel.Pdf;
 using iText.Layout.Element;
-using iText.Layout.Properties;
 using QRCoder;
-using iText.Layout;
+using HtmlAgilityPack;
 
 namespace api_elise.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class HTMLGeneratorController : ControllerBase
+    public class SeparatorSheetGenerator : ControllerBase   
     {
         private readonly IModelRepository _modelRepository;
         private readonly IMapper _mapper;
         private readonly ApiClient _apiClient;
 
-        public HTMLGeneratorController(IModelRepository modelRepository, IMapper mapper, ApiClient apiClient)
+        public SeparatorSheetGenerator(IModelRepository modelRepository, IMapper mapper, ApiClient apiClient)
         {
             _modelRepository = modelRepository;
             _mapper = mapper;
             _apiClient = apiClient;
         }
 
+        // Preview Method 
         [HttpPost]
         [ProducesResponseType(200)]
         [ProducesResponseType(400)]
@@ -180,100 +178,87 @@ namespace api_elise.Controllers
             return xsltContent;
         }
         
-
-        private void SavePdfWithHtmlAndQRCodes(List<string> textList, string filePath = "C:/Users/user/source/repos/api-elise/Test_Data/")
+        // Generate separatorSheet to dowload 
+        private List<string> GenerateQrCodesWithFilePaths(List<string> content)
         {
-            using (MemoryStream memoryStream = new MemoryStream())
+            List<string> imageUrls = new List<string>();
+            string basePath = Path.Combine(Directory.GetCurrentDirectory(), "Test_Data");
+
+            if (!Directory.Exists(basePath))
             {
-                try
-                {
-                    using (PdfWriter writer = new PdfWriter(memoryStream))
-                    {
-                        writer.SetCloseStream(false);
-                        using (PdfDocument pdf = new PdfDocument(writer))
-                        using (Document document = new Document(pdf))
-                        {
-                            for (int i = 0; i < textList.Count; i++)
-                            {
-                                string text = textList[i];
-
-                                // Add a QR code to the page
-                                var qrCodeData = GenerateQrCode(text);
-                                byte[] qrImageData = Convert.FromBase64String(qrCodeData);
-                                ImageData imageData = ImageDataFactory.Create(qrImageData);
-                                Image qrImage = new Image(imageData).SetAutoScale(true);
-                                document.Add(qrImage);
-
-                                // Add content to the page
-                                document.Add(new Paragraph(text).SetTextAlignment(TextAlignment.CENTER).SetMarginTop(20));
-
-                                // Check if this is not the last item
-                                if (i < textList.Count - 1)
-                                {
-                                    document.Add(new AreaBreak(AreaBreakType.NEXT_PAGE));
-                                }
-                            }
-                        }
-                    }
-
-                    // Save to file
-                    using (FileStream fileStream = new FileStream(filePath, FileMode.Create, FileAccess.Write))
-                    {
-                        memoryStream.WriteTo(fileStream);
-                    }
-                }
-                catch (Exception ex)
-                {
-                    throw new ApplicationException("Error generating and saving PDF", ex);
-                }
+                Directory.CreateDirectory(basePath);
             }
-        }
 
-        private string GenerateQrCode(string content)
-        {
             using (QRCodeGenerator qrGenerator = new QRCodeGenerator())
-            using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(content, QRCodeGenerator.ECCLevel.Q))
-            using (PngByteQRCode qrCode = new PngByteQRCode(qrCodeData))
             {
-                byte[] qrCodeImage = qrCode.GetGraphic(20);
-                return Convert.ToBase64String(qrCodeImage);
-            }
-        }
+                foreach (string item in content)
+                {
+                    using (QRCodeData qrCodeData = qrGenerator.CreateQrCode(item, QRCodeGenerator.ECCLevel.Q))
+                    using (PngByteQRCode qrCode = new PngByteQRCode(qrCodeData))
+                    {
+                        byte[] qrCodeImage = qrCode.GetGraphic(20);
 
-        [HttpPost("GeneratePdfAndSave")]
-        public IActionResult GeneratePdfAndSave([FromBody] List<string> textList)
+                        // Generate file name based on timestamp
+                        string timestamp = DateTime.UtcNow.ToString("yyyyMMddHHmmssfff");
+                        string fileName = $"qrcode_{timestamp}.png";
+                        string filePath = Path.Combine(basePath, fileName);
+
+                        // Save the image as a PNG file
+                        System.IO.File.WriteAllBytes(filePath, qrCodeImage);
+
+                        imageUrls.Add(filePath);
+                    }
+                }
+            }
+            return imageUrls;
+        }
+        private string InsertQrCodesIntoTemplate(string template, List<string> images)
         {
-            // Generate a timestamp for the PDF filename
-            string timeStamp = DateTime.Now.ToString("yyyyMMddHHmmss");
-            string pdfName = $"PDF_{timeStamp}.pdf";
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(template);
 
-            string filePath = Path.Combine("C:/Users/user/source/repos/api-elise/Test_Data/", pdfName);
+            for (int i = 0; i < images.Count; i++)
+            {
+                string imgId = $"qrcode{i + 1}";
+                var imgNode = htmlDoc.DocumentNode.SelectSingleNode($"//img[@id='{imgId}']");
 
-            try
-            {
-                SavePdfWithHtmlAndQRCodes(textList, filePath);
-                ScheduleFileRemoval(filePath);
-                return Ok($"PDF saved to {filePath}");
+                if (imgNode != null)
+                {
+                    imgNode.SetAttributeValue("src", images[i]);
+                }
             }
-            catch (Exception ex)
-            {
-                return StatusCode(500, $"Internal server error: {ex.Message}");
-            }
+
+            return htmlDoc.DocumentNode.OuterHtml;
         }
-
-        private void ScheduleFileRemoval(string filePath)
+        
+        
+        [HttpPost("GenerateSeparatorSheet")]
+        [ProducesResponseType(200)]
+        [ProducesResponseType(400)]
+        [ProducesResponseType(404)]
+        public IActionResult GeneratorSeparatorSheetWithQrCodes([FromQuery] int ModelId, [FromBody] List<string> content)
         {
-            System.Threading.Tasks.Task.Run(async () =>
-            {
-                await System.Threading.Tasks.Task.Delay(TimeSpan.FromMinutes(3)); // Wait for 3 minutes
-                RemoveFile(filePath);
-            });
-        }
 
-        private void RemoveFile(string filePath)
+            Model model = _modelRepository.GetModel(ModelId);
+
+            if (model == null)
+            {
+                return NotFound($"Model with id {ModelId} does not exist!");
+            }
+            
+            string template = model.Template;
+            
+            if (string.IsNullOrEmpty(template))
+            {
+                return BadRequest($"Model with id {ModelId} does not contain a valid template");
+            }
+            
+            // If all is okayy
+            List<string> qrCodes = GenerateQrCodesWithFilePaths(content);
+            string updatedTemplate = InsertQrCodesIntoTemplate(template, qrCodes);
            
-        {
-            System.IO.File.Delete(filePath);
+            return Ok(updatedTemplate);
         }
+        
     }
 }

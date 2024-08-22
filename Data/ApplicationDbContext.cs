@@ -26,6 +26,7 @@ namespace api_elise.Data
                 entity.Property(e => e.Id).ValueGeneratedOnAdd();
                 entity.Property(e => e.Title).IsRequired().HasMaxLength(500);
                 entity.Property(e => e.Description).IsRequired().HasMaxLength(1000);
+                entity.Property(e => e.Template); // Not required
 
                 // One-to-many relationship
                 entity.HasMany(e => e.QRCodes)

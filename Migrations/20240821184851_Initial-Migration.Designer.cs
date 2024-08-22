@@ -11,7 +11,7 @@ using api_elise.Data;
 namespace api_elise.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20240801114930_Initial Migration")]
+    [Migration("20240821184851_Initial-Migration")]
     partial class InitialMigration
     {
         /// <inheritdoc />
@@ -36,6 +36,10 @@ namespace api_elise.Migrations
                         .IsRequired()
                         .HasMaxLength(1000)
                         .HasColumnType("nvarchar(1000)");
+
+                    b.Property<string>("Template")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
