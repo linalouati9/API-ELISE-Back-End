@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 
 namespace api_elise.Controllers
 {
@@ -17,7 +19,6 @@ namespace api_elise.Controllers
         private readonly IModelRepository _modelRepository;
         private readonly IQRCodeRepository _qrcodeRepository;
         private readonly IMapper _mapper;
-
         public QRCodeController(IModelRepository modelRepository, IQRCodeRepository qrcodeRepository, IMapper mapper)
         {
             _modelRepository = modelRepository;
@@ -131,6 +132,7 @@ namespace api_elise.Controllers
 
             return Ok("QR code deleted successfully..");
         }
+
     }
 
 

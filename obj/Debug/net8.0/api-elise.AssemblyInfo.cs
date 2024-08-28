@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("api-elise")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cb66a38bfdb3bc01972a06331cd526fec3c89c2f")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+140c96b7cbd2f301b20a0d628552439b2c407c9f")]
 [assembly: System.Reflection.AssemblyProductAttribute("api-elise")]
 [assembly: System.Reflection.AssemblyTitleAttribute("api-elise")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

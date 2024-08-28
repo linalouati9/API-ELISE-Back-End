@@ -1,71 +1,12 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\user\\source\\repos\\api-elise\\",
-  "Documents": [
-    {
-      "AbsoluteMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|c:\\users\\user\\source\\repos\\api-elise\\api-elise.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
-      "RelativeMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|solutionrelative:api-elise.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|c:\\users\\user\\source\\repos\\api-elise\\controllers\\htmlgeneratorcontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|solutionrelative:controllers\\htmlgeneratorcontroller .cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
-      "AbsoluteMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|c:\\users\\user\\source\\repos\\api-elise\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
-      "RelativeMoniker": "D:0:0:{88FC0414-D3E8-4575-B303-1527E67FB397}|api-elise.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
-    }
-  ],
+  "Documents": [],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": [
-        {
-          "DockedWidth": 200,
-          "SelectedChildIndex": 0,
-          "Children": [
-            {
-              "$type": "Document",
-              "DocumentIndex": 0,
-              "Title": "api-elise.http",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\api-elise\\api-elise.http",
-              "RelativeDocumentMoniker": "api-elise.http",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\api-elise\\api-elise.http",
-              "RelativeToolTip": "api-elise.http",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAQAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
-              "WhenOpened": "2024-08-21T21:16:54.303Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 2,
-              "Title": "appsettings.json",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\api-elise\\appsettings.json",
-              "RelativeDocumentMoniker": "appsettings.json",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\api-elise\\appsettings.json",
-              "RelativeToolTip": "appsettings.json",
-              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
-              "WhenOpened": "2024-08-21T21:16:50.045Z",
-              "EditorCaption": ""
-            },
-            {
-              "$type": "Document",
-              "DocumentIndex": 1,
-              "Title": "HTMLGeneratorController .cs",
-              "DocumentMoniker": "C:\\Users\\user\\source\\repos\\api-elise\\Controllers\\HTMLGeneratorController .cs",
-              "RelativeDocumentMoniker": "Controllers\\HTMLGeneratorController .cs",
-              "ToolTip": "C:\\Users\\user\\source\\repos\\api-elise\\Controllers\\HTMLGeneratorController .cs",
-              "RelativeToolTip": "Controllers\\HTMLGeneratorController .cs",
-              "ViewState": "AQIAANYAAAAAAAAAAAAkwNAAAAAAAAAA",
-              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
-              "WhenOpened": "2024-08-21T19:06:01.348Z",
-              "EditorCaption": ""
-            }
-          ]
-        }
-      ]
+      "DocumentGroups": []
     }
   ]
 }
