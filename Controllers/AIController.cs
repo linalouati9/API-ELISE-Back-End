@@ -1,4 +1,4 @@
-﻿using api_elise.Helper;
+using api_elise.Helper;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -73,52 +73,58 @@ public class AIController : ControllerBase
     }
 
     [HttpPost("process")]
-    public async Task<IActionResult> ProcessRequest([FromBody] string request, [FromBody] string xmlDocument /* If GetDocumentById() return a valid xml, switch it to this method */)
+    public async Task<IActionResult> ProcessRequest([FromBody] ProcessRequestModel model)
     {
+        if (model == null || string.IsNullOrEmpty(model.Request))
+        {
+            // model.XmlDocument can be null : We can describe the query to the LLM without giving it the XML of the document
+            return BadRequest("Invalid input");
+        }
 
-        var jsonRequest = new { prompt = request, xml = xmlDocument };
+        var jsonRequest = new
+        {
+            prompt = model.Request,
+            xml = model.XmlDocument
+        };
 
         var jsonContent = JsonConvert.SerializeObject(jsonRequest);
-
         var content = new StringContent(jsonContent, Encoding.UTF8, "application/json");
 
-        // Send the POST request
-        HttpResponseMessage response = await _httpClient.PostAsync("http://127.0.0.1:8000/", content);
-
-        if (response.IsSuccessStatusCode)
+        try
         {
-            // Read the response content as a string
-            string result = await response.Content.ReadAsStringAsync();
+            HttpResponseMessage response = await _httpClient.PostAsync("http://127.0.0.1:8000/", content);
 
-            // Parse the JSON response
-            JObject json = JObject.Parse(result);
-
-            // Extract the XSLT code
-            string xslt_code = json["response"]?.ToString();
-
-            if (xslt_code != null)
+            if (response.IsSuccessStatusCode)
             {
-                // Clean the XSLT code
-                string cleaned_xslt_code = xslt_code
-                    .Replace("\\", "")
-                    .Replace("\n", "")
-                    .Replace("```xml", "")
-                    .Trim();
+                string result = await response.Content.ReadAsStringAsync();
+                JObject json = JObject.Parse(result);
 
-                // Escape quotes
-                cleaned_xslt_code = cleaned_xslt_code.Replace("\"", "\\\"");
+                string xsltCode = json["response"]?.ToString();
+                if (!string.IsNullOrEmpty(xsltCode))
+                {
+                    string cleanedXsltCode = xsltCode
+                        .Replace("\\", "")
+                        .Replace("\n", "")
+                        .Replace("```xml", "")
+                        .Trim()
+                        .Replace("\"", "\\\"");
 
-                return Ok(cleaned_xslt_code);
+                    return Ok(cleanedXsltCode);
+                }
+                else
+                {
+                    return BadRequest("Invalid JSON format: 'response' field is missing");
+                }
             }
             else
             {
-                return BadRequest("Invalid JSON format");
+                return StatusCode((int)response.StatusCode, "Error communicating with the AI model");
             }
         }
-        else
+        catch (Exception ex)
         {
-            return StatusCode((int)response.StatusCode, "Error communicating with the AI model");
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
-
     }
+
 }
