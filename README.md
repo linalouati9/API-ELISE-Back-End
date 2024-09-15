@@ -1,3 +1,4 @@
+
 # API ELISE BACK END
 This is the backend code for an API in the Elise GED (Electronic Document Management System) that generates separator sheets with QR codes from a list of documents stored as XML in the GED. This API uses a model containing XSLT codes, which are either manually written or generated using the LLM phi3 language model from Ollama in offline mode.
 
@@ -175,19 +176,16 @@ The output of this endpoint is the final separator sheet, which includes the upd
 #### 4/ SeparatorSheetGenerator Endpoints
 To generate the XSLT codes for the QR codes in the models using the offline language model phi3 from Ollama, you need to connect to the Flask API https://github.com/Haythem-Jaidane/xslt_generate_api/tree/main
 
-* Obtain the document XML from the Elise GED
-    ```bash 
+#### Obtain the document XML from the Elise GED
     POST /api/AI
-    ```
 * Parameters :
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `documentId` | `string`   | **Required**. The document ID stored in XML format (e.g., COURRIERS_1703).
 
-* OPass the request to generate the XSLT code to the LLM API
-    ```bash 
+#### Pass the request to the LLM API to generate the XSLT code 
     POST /api/AI/process
-    ```
+    
 * Request body :
     | Request body parameters | Type        | Description
     | :---------------------- | :---------- | :-----------------------
