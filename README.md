@@ -114,9 +114,8 @@ To run this project locally follow this steps :
     | `id` | `integer`   | **Required**. The ID of the model to delete.
 
 ## Authors
-* Lina LOUATI [lina.louati@fsb.ucar.tn]
-* Haythem Hassine JAIDANE [HaythemHassine.JAIDANE@esprit.tn]
-* Hadhemi MAHMOUD [hadhemi.mahmoud@esprit.tn ]
-* Jihed AYARI [jihedayari492@gmail.com]
-
+- [Haythem Jaidane](https://github.com/Haythem-Jaidane)
+- [Lina Louati](https://github.com/linalouati9)
+- [Hadhemi Mahmoud](https://github.com/hadhemi13)
+- [Jihed Ayari](https://github.com/jihedayari)
 
