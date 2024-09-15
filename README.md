@@ -12,9 +12,14 @@ To run this project locally follow this steps :
     ``` cmd 
     cd api-elise
     ```
+* Launch SQL Server Management Studio 2022.
+* Create your database.
+* Access SQL Server Object Explorer.
+* Find your database.
+* Copy the `DefaultConnection` string and paste it into the `DefaultConnection` field in `appsettings.json`.
 * Run the project
     ``` cmd 
-    dotnet run
+    dotnet run "seeddata"(Optionnal)
     ```
 
 ## API Reference
@@ -24,7 +29,7 @@ To run this project locally follow this steps :
 
 #### Get QR code by id
     GET /api/QRCode/${id}
-    
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id`      | `integer`   | **Required**. Id of the qrcode to fetch
@@ -114,8 +119,9 @@ To run this project locally follow this steps :
     | `id` | `integer`   | **Required**. The ID of the model to delete.
 
 ## Authors
-- [Haythem Jaidane](https://github.com/Haythem-Jaidane)
-- [Lina Louati](https://github.com/linalouati9)
-- [Hadhemi Mahmoud](https://github.com/hadhemi13)
-- [Jihed Ayari](https://github.com/jihedayari)
+* Lina LOUATI [lina.louati@fsb.ucar.tn]
+* Haythem Hassine JAIDANE [HaythemHassine.JAIDANE@esprit.tn]
+* Hadhemi MAHMOUD [hadhemi.mahmoud@esprit.tn ]
+* Jihed AYARI [jihedayari492@gmail.com]
+
 
