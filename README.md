@@ -23,30 +23,36 @@ To run this project locally follow this steps :
     ```
 
 ## API Reference
-1/ QRCode Endpoints
+#### 1/ QRCode Endpoints
 #### Get QR codes 
     GET /api/QRCode
 
 #### Get QR code by id
     GET /api/QRCode/${id}
+    
+* Parameters :
 
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id`      | `integer`   | **Required**. Id of the qrcode to fetch
     
 #### Get QR code by title
-
     GET /api/QRCode/${title}
+
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `title`   | `string`   | **Required**. Title of the qrcode to fetch
  
 #### Post QR code 
     POST /api/QRCode
-    
+* Parameters :
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `ModelId` | `integer`   | **Required**. The ID of the model containing this qrcode
+
+* Request body :
 
     | Request body parameters | Type        | Description
     | :---------------------- | :---------- | :-----------------------
@@ -55,9 +61,13 @@ To run this project locally follow this steps :
 
 #### Put QR code 
     PUT /api/QRCode/${id}
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id` | `integer`   | **Required**. The ID of the qrcode to update
+
+* Request body :
 
     | Request body parameters | Type        | Description
     | :---------------------- | :---------- | :-----------------------
@@ -66,6 +76,9 @@ To run this project locally follow this steps :
 
 #### DELETE QR code 
     DELETE /api/QRCode/${id}
+
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id` | `integer`   | **Required**. The ID of the qrcode to delete.
@@ -77,7 +90,8 @@ To run this project locally follow this steps :
 
 #### Get model by id
     GET /api/Model/${id}
-    
+* Parameters :
+ 
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id`      | `integer`   | **Required**. Id of the model to fetch
@@ -85,12 +99,15 @@ To run this project locally follow this steps :
 #### Get model by title
 
     GET /api/Model/${title}
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `title`   | `string`   | **Required**. Title of the model to fetch
  
 #### Post model 
     POST /api/Model
+* Request body :
 
     | Request body parameters | Type        | Description
     | :---------------------- | :---------- | :-----------------------
@@ -101,9 +118,14 @@ To run this project locally follow this steps :
 
 #### Put QR code 
     PUT /api/Model/${id}
+
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id` | `integer`   | **Required**. The ID of the model to update
+
+* Request body
 
     | Request body parameters | Type        | Description
     | :---------------------- | :---------- | :-----------------------
@@ -114,9 +136,45 @@ To run this project locally follow this steps :
 
 #### DELETE Model 
     DELETE /api/Model/${id}
+* Parameters :
+
     | Parameter | Type        | Description
     | :-------- | :---------- | :-----------------------
     | `id` | `integer`   | **Required**. The ID of the model to delete.
+
+#### 3/ SeparatorSheetGenerator Endpoints
+* Generate separatorSheet inputs 
+    ```bash 
+    POST /api/SeparatorSheetGenerator
+    ```
+
+* Parameters :
+    | Parameter | Type        | Description
+    | :-------- | :---------- | :-----------------------
+    | `ModelId` | `integer`   | **Required**. The ID of the model containing the XSLT codes and the template with the QR codes to be generated
+    | `mailList` | `List<string>`| **Required**.The IDs of the XML documents in the GED on which the model xslts codes will be applied
+
+Given the stored documents in the GED and the XSLT codes from the model, this endpoint will generate the result of applying the XSLT to the XML and return a list of strings as output.
+
+* Generate final separatorSheet 
+    ```bash 
+    POST /api/SeparatorSheetGenerator/SeparatorSheetGenerator
+    ```
+* Parameters :
+    | Parameter | Type        | Description
+    | :-------- | :---------- | :-----------------------
+    | `ModelId` | `integer`   | **Required**. The ID of the model containing the XSLT codes and the template with the QR codes to be generated
+
+* Request body :
+
+    | Request body parameters | Type        | Description
+    | :---------------------- | :---------- | :-----------------------
+    | `` | `List<string>`   | **Required**. This list is the output of applying the XSLTs to the XML documents in the GED.
+
+The output of this endpoint is the final separator sheet, which includes the updated model template with the QR codes to be scanned. Additionally, the QR code images are stored on the backend to provide their paths in the separator sheet template.
+
+#### 4/ SeparatorSheetGenerator Endpoints
+To generate the XSLT codes for the QR codes in the models using the offline language model phi3 from Ollama, you need to connect to the Flask API https://github.com/Haythem-Jaidane/xslt_generate_api/tree/main
 
 ## Authors
 * Lina LOUATI [lina.louati@fsb.ucar.tn]
