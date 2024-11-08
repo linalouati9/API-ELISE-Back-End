@@ -19,12 +19,13 @@ namespace api_elise.Helper
             // Create and populate the Session object
             session = new Session
             {
-                ApplicationID = "ELISEFRM2024",
-                ApplicationKey = "2b1b10bae7b143638d9a9b147e973eb3",
-                EliseVersionRequired = "6",
-                Instance = "GED",
-                Language = "Fr",
-                UserLogin = "AdminGED",
+                // Confidential connection parameters
+                ApplicationID = "",
+                ApplicationKey = "",
+                EliseVersionRequired = "",
+                Instance = "",
+                Language = "",
+                UserLogin = "",
             };
         }
 
